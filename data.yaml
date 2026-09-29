@@ -1,0 +1,13 @@
+# dataset path
+path: D:/yolov8改进/ultralytics-main/data
+
+train: D:/yolov8改进/ultralytics-main/data/images/train
+val: D:/yolov8改进/ultralytics-main/data/images/val
+#test: D:/yolov8改进/ultralytics-main/data/images/test
+
+# number of classes
+nc: 1
+
+# class names
+names:
+  0: cell

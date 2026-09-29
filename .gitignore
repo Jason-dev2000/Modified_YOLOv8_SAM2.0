@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# 训练输出
+runs/
+weights/
+*.pt
+*.pth
+*.onnx
+*.engine
+*.cache
+
+# 数据集
+datasets/
+data/
+
+# Ultralytics 官方文档/CI
+docs/
+mkdocs.yml
+.github/
+tests/
+docker/
+examples/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# 系统
+.DS_Store
+Thumbs.db
