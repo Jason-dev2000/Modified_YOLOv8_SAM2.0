@@ -40,3 +40,4 @@ examples/
 # 系统
 .DS_Store
 Thumbs.db
+ultralytics/nn/extra_modules/cutlass/
