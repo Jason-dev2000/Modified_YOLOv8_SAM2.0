@@ -111,7 +111,7 @@ def sam_segment(sam_model, image, boxes):
         multimask_output=True,
         return_logits=True
     )
-    print("Masks shape:", masks.shape)  # 检查掩码的形状
+
     return masks
 
 def draw_boxes(image, boxes, color=(0, 255, 0), thickness=2):
@@ -130,39 +130,36 @@ import os
 def save_segmentation_results(image, masks, boxes, output_dir):
     os.makedirs(output_dir, exist_ok=True)
 
-    # 先绘制检测框
+
     result_image_with_boxes = draw_boxes(image.copy(), boxes)
     result_image_with_overlay = image.copy()
 
-    # 确保 masks 是 numpy 数组且形状是 (N, H, W)
     if isinstance(masks, torch.Tensor):
         masks = masks.cpu().numpy()
 
     if masks.ndim == 4:
-        masks = masks[:, 0, :, :]  # 去掉冗余的维度 (N, 1, H, W)
+        masks = masks[:, 0, :, :]
 
     for i, mask in enumerate(masks):
-        # 二值化掩码，将值大于0.5的地方设置为1，否则为0
+
         mask = (mask > 0.5).astype(np.uint8)
 
-        # 创建一个与原图尺寸相同的空白图像（黑色背景）
+
         overlay = np.zeros_like(image, dtype=np.uint8)
 
-        # 将掩码区域填充为红色（或绿色/蓝色等）
-        overlay[mask == 1] = [0, 0, 255]  # 红色
 
-        # 使用 cv2.addWeighted 进行图像叠加，透明度为0.5
+        overlay[mask == 1] = [0, 0, 255]
+
+
         result_image_with_overlay = cv2.addWeighted(result_image_with_overlay, 1.0, overlay, 0.5, 0)
 
-    # 保存结果
     result_path_with_boxes = os.path.join(output_dir, "result_with_boxes.jpg")
     result_path_with_overlay = os.path.join(output_dir, "result_with_overlay.jpg")
 
     cv2.imwrite(result_path_with_boxes, result_image_with_boxes)
     cv2.imwrite(result_path_with_overlay, result_image_with_overlay)
 
-    print(f"✅ 带识别框的图像已保存到: {result_path_with_boxes}")
-    print(f"✅ 带分割覆盖的图像已保存到: {result_path_with_overlay}")
+
 
 def draw_boxes(image, boxes, color=(0, 255, 0), thickness=2):
     for box in boxes:
@@ -189,7 +186,7 @@ def detect_and_segment(image_path, output_dir):
     boxes, image = yolo_detect(yolo_model, image_path)
 
     if boxes is None or len(boxes) == 0:
-        print("没有检测到目标框")
+
         return
 
     masks = sam_segment(sam_predictor, image, boxes)
